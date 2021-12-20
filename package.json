@@ -7,6 +7,7 @@
         "test": "jest",
         "compile": "rimraf dist && tsc",
         "dev": "nodemon --exec ts-node server.ts --watch",
+        "build": "tsc --build",
         "start": "ts-node server.ts",
         "prepare": "husky install"
     },
