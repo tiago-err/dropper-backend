@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  dropper-backend:
+    container_name: dropper-backend
+    build: ./
+    image: dropper-backend/latest
+    restart: unless-stopped
+    ports:
+      - 7474:8080
+    environment:
+      - NODE_ENV=development
