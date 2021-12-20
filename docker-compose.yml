@@ -7,6 +7,9 @@ services:
     image: dropper-backend/latest
     restart: unless-stopped
     ports:
-      - 7474:8080
+      - 5151:8080
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
+      - PORT=8080
+      - SUPABASE_URL=$SUPABASE_URL
+      - SUPABASE_KEY=$SUPABASE_KEY
