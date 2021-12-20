@@ -8,9 +8,9 @@ import {indexValidator} from "../middlewares/validators/index.validations";
  * @param app
  */
 export const api = (app: Express) => {
-	app.get("/", IndexController.index);
-	app.get("/drops", IndexController.drops);
-	app.post("/drops", IndexController.postDrop);
-	app.delete("/drops", IndexController.deleteDrop);
-	app.get("/stores", IndexController.stores);
+	app.get("/api/", IndexController.index);
+	app.get("/api/drops", IndexController.drops);
+	app.post("/api/drops", IndexController.postDrop);
+	app.delete("/api/drops", IndexController.deleteDrop);
+	app.get("/api/stores", IndexController.stores);
 };
