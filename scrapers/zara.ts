@@ -4,7 +4,7 @@ import * as shortUUID from "short-uuid";
 import {getPageHtml} from "../helpers/scrapers.helpers";
 import {randomUUID} from "crypto";
 
-const getItem = async (item: {url: string; size: string}, userId: string): Promise<IDrop> => {
+const getItem = async (item: {url: string; size: string}, userId: string, storeId: string): Promise<IDrop> => {
 	const $ = cheerio.load(await getPageHtml("puppeteer", item.url));
 
 	const title = $("h1").text().trim();
@@ -18,12 +18,16 @@ const getItem = async (item: {url: string; size: string}, userId: string): Promi
 		return {size, isStocked};
 	});
 
+	const image = $("picture > source").first().attr("srcset")?.split("w,").pop()?.trim().split(" ")[0];
+
 	return {
 		id: randomUUID(),
 		userId,
 		url: item.url,
 		size: item.size.toUpperCase(),
 		name: title,
+		store: storeId,
+		image: image || "",
 		price: {
 			original: parseFloat(originalPrice.replace(/[(EUR)(\s)(,)]/g, (match) => (match === "," ? "." : ""))),
 			current: parseFloat(currentPrice.replace(/[(EUR)(\s)(,)]/g, (match) => (match === "," ? "." : ""))),

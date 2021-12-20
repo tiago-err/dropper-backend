@@ -3,7 +3,7 @@ import {IDrop} from "../interfaces/drop";
 import {getPageHtml} from "../helpers/scrapers.helpers";
 import {randomUUID} from "crypto";
 
-export default async (item: {url: string; size: string}, userId: string): Promise<IDrop> => {
+export default async (item: {url: string; size: string}, userId: string, storeId: string): Promise<IDrop> => {
 	const $ = cheerio.load(await getPageHtml("axios", item.url));
 
 	const title = $(".product-single__meta > h1").text();
@@ -18,6 +18,8 @@ export default async (item: {url: string; size: string}, userId: string): Promis
 		url: item.url,
 		name: title,
 		size: "",
+		image: "",
+		store: storeId,
 		price: {
 			original: parseFloat(originalPrice.replace(/[^\w,\.]/g, "")),
 			current: parseFloat(currentPrice.replace(/[^\w,\.]/g, "")),

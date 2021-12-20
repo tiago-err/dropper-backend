@@ -36,7 +36,10 @@ export const drops = async (req: Request, res: Response): Promise<void> => {
 	}
 
 	const supabase = req.app.get("supabase") as SupabaseClient;
-	const response = await supabase.from<IDrop>("drops").select("*").match({userId: userId, store: store});
+	const response = await supabase
+		.from<IDrop>("drops")
+		.select("*")
+		.match({userId: userId.toString().toLowerCase(), store: store.toString().toLowerCase()});
 
 	res.send(successResponse("Items successfully retrieved from store.", response.data || []));
 };
@@ -71,7 +74,7 @@ export const postDrop = async (req: Request, res: Response): Promise<void> => {
 	}
 
 	try {
-		const item = await getItemFromStore(body.url, body.size, userId.toString(), store.function);
+		const item = await getItemFromStore(body.url, body.size, userId.toString(), store.id, store.function);
 		const {data, error} = await supabase.from("drops").insert(item);
 		if (error) {
 			res.send(failResponse("Something went wrong when saving your item.", error));
