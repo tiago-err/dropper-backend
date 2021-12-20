@@ -2,7 +2,7 @@ import app from "./index";
 import {createClient} from "@supabase/supabase-js";
 
 require("dotenv").config();
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 const supabase = createClient(process.env.SUPABASE_URL || "", process.env.SUPABASE_KEY || "");
 app.set("supabase", supabase);
