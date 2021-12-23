@@ -48,7 +48,6 @@ export const postDrop = async (req: Request, res: Response): Promise<void> => {
 	interface Body {
 		store: string;
 		url: string;
-		size: string;
 	}
 
 	const body: Body = req.body;
@@ -74,7 +73,7 @@ export const postDrop = async (req: Request, res: Response): Promise<void> => {
 	}
 
 	try {
-		const item = await getItemFromStore(body.url, body.size, userId.toString(), store.id, store.function);
+		const item = await getItemFromStore(body.url, userId.toString(), store.id, store.function);
 		const {data, error} = await supabase.from("drops").insert(item);
 		if (error) {
 			res.send(failResponse("Something went wrong when saving your item.", error));
@@ -105,6 +104,27 @@ export const deleteDrop = async (req: Request, res: Response): Promise<void> => 
 	}
 
 	res.send(successResponse("Your item has been successfully deleted", {}));
+};
+
+export const updateDropSize = async (req: Request, res: Response): Promise<void> => {
+	const {drop} = req.query;
+	const {size} = req.body;
+	const {userid: userId} = req.headers;
+
+	if (!drop || !userId) {
+		res.status(400).send(failResponse("No item or UserID was sent from the request"));
+		return;
+	}
+
+	const supabase = req.app.get("supabase") as SupabaseClient;
+	const {data, error} = await supabase.from<IDrop>("drops").update({userSize: size}).match({id: drop, userId});
+
+	if (error) {
+		res.status(404).send(failResponse("The Item ID sent does not belong to an item known to the system or belonging to that user!"));
+		return;
+	}
+
+	res.send(successResponse("Your item size has been updated!", data ? data[0] : {}));
 };
 
 /**

@@ -13,4 +13,5 @@ export const api = (app: Express) => {
 	app.post("/api/drops", IndexController.postDrop);
 	app.delete("/api/drops", IndexController.deleteDrop);
 	app.get("/api/stores", IndexController.stores);
+	app.put("/api/drops", IndexController.updateDropSize);
 };
