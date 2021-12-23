@@ -15,7 +15,7 @@ const getItem = async (item: {url: string; size: string}, userId: string, storeI
 		const size = $(".product-detail-size-info__main-label", item).text().toLowerCase().trim();
 		const isStocked = $(item).attr("data-qa-action")?.toLowerCase().trim() === "size-in-stock" || false;
 
-		return {size, isStocked};
+		return {[size]: isStocked};
 	});
 
 	const image = $("picture > source").first().attr("srcset")?.split("w,").pop()?.trim().split(" ")[0];
@@ -24,7 +24,7 @@ const getItem = async (item: {url: string; size: string}, userId: string, storeI
 		id: randomUUID(),
 		userId,
 		url: item.url,
-		size: item.size.toUpperCase(),
+		userSize: "",
 		name: title,
 		store: storeId,
 		image: image || "",
@@ -32,7 +32,7 @@ const getItem = async (item: {url: string; size: string}, userId: string, storeI
 			original: parseFloat(originalPrice.replace(/[(EUR)(\s)(,)]/g, (match) => (match === "," ? "." : ""))),
 			current: parseFloat(currentPrice.replace(/[(EUR)(\s)(,)]/g, (match) => (match === "," ? "." : ""))),
 		},
-		isStocked: sizes.find((size) => size.size === item.size.toLowerCase())?.isStocked || false,
+		sizes: sizes.reduce((previous, current) => Object.assign(previous, current)),
 	};
 };
 

@@ -4,11 +4,13 @@ export interface IDrop {
 	name: string;
 	image: string;
 	store: string;
-	size: string;
+	sizes: {
+		[key: string]: boolean;
+	};
 	url: string;
 	price: {
 		original: number;
 		current: number;
 	};
-	isStocked: boolean;
+	userSize: string;
 }

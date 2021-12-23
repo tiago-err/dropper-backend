@@ -17,13 +17,13 @@ export default async (item: {url: string; size: string}, userId: string, storeId
 		userId,
 		url: item.url,
 		name: title,
-		size: "",
+		userSize: "",
 		image: "",
 		store: storeId,
 		price: {
 			original: parseFloat(originalPrice.replace(/[^\w,\.]/g, "")),
 			current: parseFloat(currentPrice.replace(/[^\w,\.]/g, "")),
 		},
-		isStocked,
+		sizes: {},
 	};
 };
